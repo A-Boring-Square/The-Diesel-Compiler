@@ -264,31 +264,38 @@ struct TokenSemicolon : public BASE_TOKEN_TYPE<void> {
 
 // Token for colon `:`
 struct TokenColon : public BASE_TOKEN_TYPE<void> {
-
+    TokenColon()
+        : BASE_TOKEN_TYPE<void>(":", nullptr, 0, false) {}
 };
 
 // Token for open parenthesis `(`
 struct TokenParenOpen : public BASE_TOKEN_TYPE<void> {
-
+    TokenParenOpen()
+        : BASE_TOKEN_TYPE<void>("(", nullptr, 0, false) {}
 };         
 
 // Token for close parenthesis `)`
 struct TokenParenClose : public BASE_TOKEN_TYPE<void> {
-
+    TokenParenClose()
+        : BASE_TOKEN_TYPE<void>(")", nullptr, 0, false) {}
 };
 
 // Token for open square bracket `[`
 struct TokenSquareParenOpen : public BASE_TOKEN_TYPE<void> {
-
+    TokenSquareParenOpen()
+        : BASE_TOKEN_TYPE<void>("[", nullptr, 0, false) {}
 };
 
 // Token for close square bracket `]`
 struct TokenSquareParenClose : public BASE_TOKEN_TYPE<void> {
-
+    TokenSquareParenClose()
+        : BASE_TOKEN_TYPE<void>("]", nullptr, 0, false) {}
 };
 
 // Token for open curly brace `{`
 struct TokenCurlyParenOpen : public BASE_TOKEN_TYPE<void> {
+    TokenCurlyParenOpen()
+        : BASE_TOKEN_TYPE<void>("{", nullptr, 0, false) {}
 
 };
 
