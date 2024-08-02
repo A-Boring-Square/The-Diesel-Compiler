@@ -300,7 +300,7 @@ struct TokenCurlyParenOpen : public BASE_TOKEN_TYPE<void> {
 };
 
 // Token for close curly brace `}`
-struct TokenCurlyParenClose {
+struct TokenCurlyParenClose : public BASE_TOKEN_TYPE<void> {
     TokenCurlyParenClose()
         : BASE_TOKEN_TYPE<void>("}", nullptr, 0, false) {}
 };
