@@ -229,25 +229,3 @@ if (Temperature > 30) {
   #[ do something for low temperature ]# 
 }
 ```
-
-## Technical Information
-
-### The Error Checker
-
-The Error Checker in Diesel has four stages and provides suggestions and best practices.
-
-#### Stage 1
-
-During Stage 1, the Error Checker logs simple mistakes such as unmatched brackets, parentheses, and curly brackets.
-
-#### Stage 2
-
-During Stage 2, the Error Checker checks for syntax errors and provides hints on how to fix common errors and suggests safer practices.
-
-#### Stage 3
-
-During Stage 3, the Error Checker logs type errors using the cached AST.
-
-#### Stage 4
-
-During Stage 4, the Error Checker checks memory usage for correct allocation and freeing, and ensures pointer safety.
