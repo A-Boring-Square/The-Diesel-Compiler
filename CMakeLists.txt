@@ -12,7 +12,7 @@ endif()
 project ("Dieselc")
 
 # Add source to this project's executable.
-add_executable (Dieselc "Dieselc.cpp" "Compiler/Parser.cpp" "Compiler/Parser.hpp" "Compiler/Tokenizer.cpp" "Compiler/Tokenizer.hpp" "Compiler/Compiler.cpp")
+add_executable (Dieselc "Dieselc.cpp" "Compiler/Parser.cpp" "Compiler/Parser.hpp" "Compiler/Tokenizer.cpp" "Compiler/Tokenizer.hpp" "Compiler/Compiler.cpp" "Compiler/ASTNode.cpp")
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET Dieselc PROPERTY CXX_STANDARD 20)
