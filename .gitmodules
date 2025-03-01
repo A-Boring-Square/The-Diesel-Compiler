@@ -1,0 +1,3 @@
+[submodule "BuildSystem/toml"]
+	path = BuildSystem/toml
+	url = https://github.com/Up05/toml_parser
