@@ -1,17 +1,27 @@
 package Compiler
 
+import "core:mem"
+import "core:strings"
+import "core:unicode/utf8"
+import "core:text/scanner"
+
 import "Common"
 
-
-// This file tokenizes, parses and then compiles the diesel source code into the equivalent IR
-
-// Globally used objects
-
-DSL_CodeString: [dynamic]rune // list of the actual diesel source code split into chars
-
-DSL_FOUND_ENTRY_FUNCTION_MOD: bool = false // mainly used for error checking
-
+DSL_CodeString: [dynamic]rune
+DSL_TOKENS_LIST: [dynamic]Common.TOKEN
 DSL_AST: Common.AST_NODE
+current_token_index: int = 0
+
+LoadCodeString :: proc(SourceCode: string, allocator := context.allocator) {
+    Runes: []rune = utf8.string_to_runes(SourceCode, allocator)
+    
+    for Rune in Runes {
+        append(&DSL_CodeString, Rune)
+    }
+}
 
 
-// Tokenizer
+
+Tokenize :: proc (allocator := context.allocator) {
+
+}

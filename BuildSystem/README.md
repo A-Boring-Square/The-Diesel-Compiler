@@ -1,0 +1,1 @@
+# The Diesel Build System is a separate project bundled with the Compiler and under the MIT License and is compiled as a Dynamic Library and linked with the dieselc Executable. This is so that other projects can use this system to make custom compilers for Diesel.

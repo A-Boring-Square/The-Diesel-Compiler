@@ -150,7 +150,7 @@ Diesel is a manual memory-managed language.
 
 ### Pointers
 
-Pointers in Diesel use two built-in functions `Pointer()` and `Reference()` for readability and safety.
+Pointers in Diesel use a built-in function `Pointer()` for readability and safety.
 
 ```diesel
 var MyCoolVar: int64 = -5003;
