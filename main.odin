@@ -13,7 +13,7 @@ when ODIN_ARCH == .wasm32 || ODIN_ARCH == .wasm64p32 {
 }
 
 
-HELP_MENU :: ""
+HELP_MENU :: "dieselc is the C transpiler for the Diesel programing language\n"
 
 
 main :: proc() {
@@ -33,5 +33,6 @@ main :: proc() {
 			mem.tracking_allocator_destroy(&track)
 		}
 	}
+
 	
 }
