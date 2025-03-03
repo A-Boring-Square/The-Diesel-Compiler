@@ -4,7 +4,7 @@ import "core:fmt"
 import "core:mem"
 import "core:mem/virtual"
 import "Compiler"
-
+import "Compiler/Common"
 
 
 
@@ -33,6 +33,11 @@ main :: proc() {
 			mem.tracking_allocator_destroy(&track)
 		}
 	}
-
-	
+	fmt.println(HELP_MENU)
+	Compiler.InitTokenizerCodeString("else")
+	Compiler.Tokenize()
+	token: Common.Token 
+	for &token in Compiler.DSLTokensList {
+		Common.PrintToken(&token)
+	}
 }

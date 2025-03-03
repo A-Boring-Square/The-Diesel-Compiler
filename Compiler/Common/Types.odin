@@ -4,7 +4,7 @@ package Common
 
 // Tokenizer types
 
-TOKEN_TYPE :: enum {
+TokenType :: enum {
     
     // Data types
     INT_8,
@@ -85,13 +85,14 @@ TOKEN_TYPE :: enum {
 
     // General Identifiers
     SYMBOL,
-    WHITE_SPACE
+    WHITE_SPACE,
+    INVALID
 }
 
-TOKEN :: struct {
+Token :: struct {
     
-    TOKEN_TEXT: string,
-    TOKEN_TYPE: TOKEN_TYPE
+    Text: string,
+    Type: TokenType
 
 }
 
@@ -100,9 +101,9 @@ TOKEN :: struct {
 
 // Parser types
 
-AST_NODE :: struct {
-    TOKEN_IN_NODE: TOKEN,
-    NEXT_AST_NODE: ^AST_NODE
+ASTNode :: struct {
+    TokenInNode: Token,
+    NextASTNode: ^ASTNode
 
 }
 
