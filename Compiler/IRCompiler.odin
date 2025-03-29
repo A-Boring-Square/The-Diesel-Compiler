@@ -1,12 +1,15 @@
 #+feature dynamic-literals
 
+
 package Compiler
 
 import "core:mem"
 import "core:strings"
 import "core:unicode/utf8"
 import "core:unicode"
-import "core:odin/tokenizer"
+import "core:fmt"
+import "core:strconv"
+
 import "Common"
 
 @(private)
@@ -50,7 +53,29 @@ MatchToken :: proc() {
             CurrentTokenIndex += 1
             append_elem(&TokenText, DSLCodeString[CurrentTokenIndex])
         }
-        TokenType = .INT_32  
+        TokenType = .INT_32  // Default type (can be adjusted later to specific type)
+
+        // Convert token to integer for validation
+        IntValue: i128 = cast(i128)strconv.atoi(utf8.runes_to_string(TokenText[:]))
+
+        // Range checking based on token type
+        if TokenType == .INT_8 && (IntValue < -128 || IntValue > 127) {
+            fmt.eprint("Integer value", utf8.runes_to_string(TokenText[:]), "is out of range for type int8")
+        } else if TokenType == .INT_16 && (IntValue < -32768 || IntValue > 32767) {
+            fmt.eprint("Integer value", utf8.runes_to_string(TokenText[:]), "is out of range for type int16")
+        } else if TokenType == .INT_32 && (IntValue < -2147483648 || IntValue > 2147483647) {
+            fmt.eprint("Integer value", utf8.runes_to_string(TokenText[:]), "is out of range for type int32")
+        } else if TokenType == .INT_64 && (IntValue < -9223372036854775808 || IntValue > 9223372036854775807) {
+            fmt.eprint("Integer value", utf8.runes_to_string(TokenText[:]),"is out of range for type int64")
+        } else if TokenType == .U_INT_8 && (IntValue < 0 || IntValue > 255) {
+            fmt.eprint("Unsigned integer value", utf8.runes_to_string(TokenText[:]), "is out of range for type uint8")
+        } else if TokenType == .U_INT_16 && (IntValue < 0 || IntValue > 65535) {
+            fmt.eprint("Unsigned integer value", utf8.runes_to_string(TokenText[:]), "is out of range for type uint16")
+        } else if TokenType == .U_INT_32 && (IntValue < 0 || IntValue > 4294967295) {
+            fmt.eprint("Unsigned integer value ", utf8.runes_to_string(TokenText[:]), "is out of range for type uint32")
+        } else if TokenType == .U_INT_64 && (IntValue < 0 || cast(uint)IntValue > 18446744073709551615) {
+            fmt.eprint("Unsigned integer value", utf8.runes_to_string(TokenText[:]), "is out of range for type uint64")
+        }
     } 
     else if Rune == '"' {
         for CurrentTokenIndex + 1 < len(DSLCodeString) && DSLCodeString[CurrentTokenIndex + 1] != '"' {
@@ -80,7 +105,8 @@ MatchToken :: proc() {
     } 
     else if IsOperator(Rune) {
         append_elem(&TokenText, Rune)
-        if CurrentTokenIndex + 1 < len(DSLCodeString) && IsOperator(DSLCodeString[CurrentTokenIndex + 1]) {
+        // Check for continuation of the operator
+        if CurrentTokenIndex + 1 < len(DSLCodeString) && IsOperatorContinuation(DSLCodeString[CurrentTokenIndex + 1]) {
             CurrentTokenIndex += 1
             append_elem(&TokenText, DSLCodeString[CurrentTokenIndex])
         }
@@ -98,12 +124,16 @@ MatchToken :: proc() {
     CurrentTokenIndex += 1
 }
 
+
+
 @(private)
 // Classifies identifiers (keywords and built-ins)
 ClassifyIdentifier :: proc(Text: string) -> Common.TokenType {
     Keywords: map[string]Common.TokenType = {
         "const" = .CONST, "var" = .VAR, "func" = .FUNC,
-        "while" = .WHILE, "for" = .FOR, "if" = .IF, "elif" = .ELIF, "else" = .ELSE
+        "while" = .WHILE, "for" = .FOR, "if" = .IF, "elif" = .ELIF, "else" = .ELSE,
+        "int8" = .INT_8, "int16" = .INT_16, "int32" = .INT_32, "int64" = .INT_64,
+        "uint8" = .U_INT_8, "uint16" = .U_INT_16, "uint32" = .U_INT_32, "uint64" = .U_INT_64
     }
     Builtins: map[string]Common.TokenType = {
         "Allocate" = .BUILTIN_ALLOCATE, "Free" = .BUILTIN_FREE,

@@ -19,9 +19,9 @@ HELP_MENU :: "dieselc is the C transpiler for the Diesel programing language\n"
 main :: proc() {
     
 	when ODIN_DEBUG {
-		track: mem.Tracking_Allocator
-		mem.tracking_allocator_init(&track, context.allocator)
-		context.allocator = mem.tracking_allocator(&track)
+		track: virtual.Tracking_Allocator
+		virtual.tracking_allocator_init(&track, context.allocator)
+		context.allocator = virtual.tracking_allocator(&track)
 
 		defer {
 			if len(track.allocation_map) > 0 {
@@ -30,11 +30,11 @@ main :: proc() {
 					fmt.eprintf("- %v bytes @ %v\n", entry.size, entry.location)
 				}
 			}
-			mem.tracking_allocator_destroy(&track)
+			virtual.tracking_allocator_destroy(&track)
 		}
 	}
 	fmt.println(HELP_MENU)
-	Compiler.InitTokenizerCodeString("else")
+	Compiler.InitTokenizerCodeString("var bob: int8 = 6/2;")
 	Compiler.Tokenize()
 	token: Common.Token 
 	for &token in Compiler.DSLTokensList {
