@@ -51,30 +51,21 @@
 #endif
 #endif
 
-#ifdef DSL_STD_LIB_FLAG_USE_FAST_INVERSE_SQRT || !defined(DSL_STD_LIB_FLAG_USE_MATH_H)
-// Fast inverse square root implementation
-static inline float DSL_InvSqrt(float x) {
-    float half = 0.5f * x;
-    int32_t i = *(int32_t*)&x;        // Treat float as int
-    i = 0x5f3759df - (i >> 1);        // The magic number
-    x = *(float*)&i;                   // Convert back to float
-    x = x * (1.5f - half * x * x);     // One iteration of Newton's method
-    return x;
-}
-#else
-// Fallback: Standard inverse square root using math ibrary
-static inline float DSL_FastInvSqrt(float x) {
-    // NOTE: this could error in certen IDEs because of the highly macroed nature of the Diesel standard library
+
+static inline DSL_float32 DSL_InvSqrt32(DSL_float32 x) {
     return 1.0f / sqrtf(x);
 }
-#endif
+
+static inline DSL_float64 DSL_InvSqrt64(DSL_float64 x) {
+    return 1.0d / sqrt(x)
+}
 
 // ------------------------------ ADDITION ------------------------------
-DSL_int8 DSL_add_int8(int8_t count, ...) {
+DSL_int8 DSL_AddInt8(DSL_int8 count, ...) {
     va_list args;
     va_start(args, count);
     DSL_int8 result = 0;
-    for (int8_t i = 0; i < count; ++i) {
+    for (DSL_int8 i = 0; i < count; ++i) {
         DSL_int8 num = va_arg(args, DSL_int8);
         CHECK_OVERFLOW(result, num, INT8_MAX, INT8_MIN, "addition");
         result += num;
@@ -83,11 +74,11 @@ DSL_int8 DSL_add_int8(int8_t count, ...) {
     return result;
 }
 
-DSL_uint8 DSL_add_uint8(int8_t count, ...) {
+DSL_uint8 DSL_AddUint8(DSL_int8 count, ...) {
     va_list args;
     va_start(args, count);
     DSL_uint8 result = 0;
-    for (int8_t i = 0; i < count; ++i) {
+    for (DSL_int8 i = 0; i < count; ++i) {
         DSL_uint8 num = va_arg(args, DSL_uint8);
         CHECK_OVERFLOW(result, num, UINT8_MAX, 0, "addition");
         result += num;
@@ -96,11 +87,11 @@ DSL_uint8 DSL_add_uint8(int8_t count, ...) {
     return result;
 }
 
-DSL_int16 DSL_add_int16(int8_t count, ...) {
+DSL_int16 DSL_AddInt16(DSL_int8 count, ...) {
     va_list args;
     va_start(args, count);
     DSL_int16 result = 0;
-    for (int8_t i = 0; i < count; ++i) {
+    for (DSL_int8 i = 0; i < count; ++i) {
         DSL_int16 num = va_arg(args, DSL_int16);
         CHECK_OVERFLOW(result, num, INT16_MAX, INT16_MIN, "addition");
         result += num;
@@ -109,11 +100,11 @@ DSL_int16 DSL_add_int16(int8_t count, ...) {
     return result;
 }
 
-DSL_uint16 DSL_add_uint16(int8_t count, ...) {
+DSL_uint16 DSL_AddUint16(DSL_int8 count, ...) {
     va_list args;
     va_start(args, count);
     DSL_uint16 result = 0;
-    for (int8_t i = 0; i < count; ++i) {
+    for (DSL_int8 i = 0; i < count; ++i) {
         DSL_uint16 num = va_arg(args, DSL_uint16);
         CHECK_OVERFLOW(result, num, UINT16_MAX, 0, "addition");
         result += num;
@@ -122,11 +113,11 @@ DSL_uint16 DSL_add_uint16(int8_t count, ...) {
     return result;
 }
 
-DSL_int32 DSL_add_int32(int8_t count, ...) {
+DSL_int32 DSL_AddInt32(DSL_int8 count, ...) {
     va_list args;
     va_start(args, count);
     DSL_int32 result = 0;
-    for (int8_t i = 0; i < count; ++i) {
+    for (DSL_int8 i = 0; i < count; ++i) {
         DSL_int32 num = va_arg(args, DSL_int32);
         CHECK_OVERFLOW(result, num, INT32_MAX, INT32_MIN, "addition");
         result += num;
@@ -135,11 +126,11 @@ DSL_int32 DSL_add_int32(int8_t count, ...) {
     return result;
 }
 
-DSL_uint32 DSL_add_uint32(int8_t count, ...) {
+DSL_uint32 DSL_AddUint32(DSL_int8 count, ...) {
     va_list args;
     va_start(args, count);
     DSL_uint32 result = 0;
-    for (int8_t i = 0; i < count; ++i) {
+    for (DSL_int8 i = 0; i < count; ++i) {
         DSL_uint32 num = va_arg(args, DSL_uint32);
         CHECK_OVERFLOW(result, num, UINT32_MAX, 0, "addition");
         result += num;
@@ -148,11 +139,11 @@ DSL_uint32 DSL_add_uint32(int8_t count, ...) {
     return result;
 }
 
-DSL_int64 DSL_add_int64(int8_t count, ...) {
+DSL_int64 DSL_AddInt64(DSL_int8 count, ...) {
     va_list args;
     va_start(args, count);
     DSL_int64 result = 0;
-    for (int8_t i = 0; i < count; ++i) {
+    for (DSL_int8 i = 0; i < count; ++i) {
         DSL_int64 num = va_arg(args, DSL_int64);
         CHECK_OVERFLOW(result, num, INT64_MAX, INT64_MIN, "addition");
         result += num;
@@ -161,11 +152,11 @@ DSL_int64 DSL_add_int64(int8_t count, ...) {
     return result;
 }
 
-DSL_uint64 DSL_add_uint64(int8_t count, ...) {
+DSL_uint64 DSL_AddUint64(DSL_int8 count, ...) {
     va_list args;
     va_start(args, count);
     DSL_uint64 result = 0;
-    for (int8_t i = 0; i < count; ++i) {
+    for (DSL_int8 i = 0; i < count; ++i) {
         DSL_uint64 num = va_arg(args, DSL_uint64);
         CHECK_OVERFLOW(result, num, UINT64_MAX, 0, "addition");
         result += num;
@@ -175,11 +166,11 @@ DSL_uint64 DSL_add_uint64(int8_t count, ...) {
 }
 
 // ------------------------------ FLOATING POINT ADDITION ------------------------------
-DSL_float32 DSL_add_float32(int8_t count, ...) {
+DSL_float32 DSL_AddFloat32(DSL_int8 count, ...) {
     va_list args;
     va_start(args, count);
     DSL_float32 result = 0.0f;
-    for (int8_t i = 0; i < count; ++i) {
+    for (DSL_int8 i = 0; i < count; ++i) {
         DSL_float32 num = va_arg(args, DSL_float32);
         result += num;
     }
@@ -187,11 +178,11 @@ DSL_float32 DSL_add_float32(int8_t count, ...) {
     return result;
 }
 
-DSL_float64 DSL_add_float64(int8_t count, ...) {
+DSL_float64 DSL_AddFloat64(DSL_int8 count, ...) {
     va_list args;
     va_start(args, count);
     DSL_float64 result = 0.0;
-    for (int8_t i = 0; i < count; ++i) {
+    for (DSL_int8 i = 0; i < count; ++i) {
         DSL_float64 num = va_arg(args, DSL_float64);
         result += num;
     }
@@ -200,11 +191,11 @@ DSL_float64 DSL_add_float64(int8_t count, ...) {
 }
 
 // ------------------------------ MULTIPLICATION ------------------------------
-DSL_int8 DSL_mul_int8(int8_t count, ...) {
+DSL_int8 DSL_MulInt8(DSL_int8 count, ...) {
     va_list args;
     va_start(args, count);
     DSL_int8 result = 1;
-    for (int8_t i = 0; i < count; ++i) {
+    for (DSL_int8 i = 0; i < count; ++i) {
         DSL_int8 num = va_arg(args, DSL_int8);
         CHECK_MUL_OVERFLOW(result, num, INT8_MAX, INT8_MIN, "multiplication");
         result *= num;
@@ -213,11 +204,11 @@ DSL_int8 DSL_mul_int8(int8_t count, ...) {
     return result;
 }
 
-DSL_uint8 DSL_mul_uint8(int8_t count, ...) {
+DSL_uint8 DSL_MulUint8(DSL_int8 count, ...) {
     va_list args;
     va_start(args, count);
     DSL_uint8 result = 1;
-    for (int8_t i = 0; i < count; ++i) {
+    for (DSL_int8 i = 0; i < count; ++i) {
         DSL_uint8 num = va_arg(args, DSL_uint8);
         CHECK_MUL_OVERFLOW(result, num, UINT8_MAX, 0, "multiplication");
         result *= num;
@@ -226,11 +217,11 @@ DSL_uint8 DSL_mul_uint8(int8_t count, ...) {
     return result;
 }
 
-DSL_int16 DSL_mul_int16(int8_t count, ...) {
+DSL_int16 DSL_MulInt16(DSL_int8 count, ...) {
     va_list args;
     va_start(args, count);
     DSL_int16 result = 1;
-    for (int8_t i = 0; i < count; ++i) {
+    for (DSL_int8 i = 0; i < count; ++i) {
         DSL_int16 num = va_arg(args, DSL_int16);
         CHECK_MUL_OVERFLOW(result, num, INT16_MAX, INT16_MIN, "multiplication");
         result *= num;
@@ -239,11 +230,11 @@ DSL_int16 DSL_mul_int16(int8_t count, ...) {
     return result;
 }
 
-DSL_uint16 DSL_mul_uint16(int8_t count, ...) {
+DSL_uint16 DSL_MulUint16(DSL_int8 count, ...) {
     va_list args;
     va_start(args, count);
     DSL_uint16 result = 1;
-    for (int8_t i = 0; i < count; ++i) {
+    for (DSL_int8 i = 0; i < count; ++i) {
         DSL_uint16 num = va_arg(args, DSL_uint16);
         CHECK_MUL_OVERFLOW(result, num, UINT16_MAX, 0, "multiplication");
         result *= num;
@@ -252,11 +243,11 @@ DSL_uint16 DSL_mul_uint16(int8_t count, ...) {
     return result;
 }
 
-DSL_int32 DSL_mul_int32(int8_t count, ...) {
+DSL_int32 DSL_MulInt32(DSL_int8 count, ...) {
     va_list args;
     va_start(args, count);
     DSL_int32 result = 1;
-    for (int8_t i = 0; i < count; ++i) {
+    for (DSL_int8 i = 0; i < count; ++i) {
         DSL_int32 num = va_arg(args, DSL_int32);
         CHECK_MUL_OVERFLOW(result, num, INT32_MAX, INT32_MIN, "multiplication");
         result *= num;
@@ -265,11 +256,11 @@ DSL_int32 DSL_mul_int32(int8_t count, ...) {
     return result;
 }
 
-DSL_uint32 DSL_mul_uint32(int8_t count, ...) {
+DSL_uint32 DSL_MulUint32(DSL_int8 count, ...) {
     va_list args;
     va_start(args, count);
     DSL_uint32 result = 1;
-    for (int8_t i = 0; i < count; ++i) {
+    for (DSL_int8 i = 0; i < count; ++i) {
         DSL_uint32 num = va_arg(args, DSL_uint32);
         CHECK_MUL_OVERFLOW(result, num, UINT32_MAX, 0, "multiplication");
         result *= num;
@@ -278,11 +269,11 @@ DSL_uint32 DSL_mul_uint32(int8_t count, ...) {
     return result;
 }
 
-DSL_int64 DSL_mul_int64(int8_t count, ...) {
+DSL_int64 DSL_MulInt64(DSL_int8 count, ...) {
     va_list args;
     va_start(args, count);
     DSL_int64 result = 1;
-    for (int8_t i = 0; i < count; ++i) {
+    for (DSL_int8 i = 0; i < count; ++i) {
         DSL_int64 num = va_arg(args, DSL_int64);
         CHECK_MUL_OVERFLOW(result, num, INT64_MAX, INT64_MIN, "multiplication");
         result *= num;
@@ -291,17 +282,162 @@ DSL_int64 DSL_mul_int64(int8_t count, ...) {
     return result;
 }
 
-DSL_uint64 DSL_mul_uint64(int8_t count, ...) {
+DSL_uint64 DSL_MulUint64(DSL_int8 count, ...) {
     va_list args;
     va_start(args, count);
     DSL_uint64 result = 1;
-    for (int8_t i = 0; i < count; ++i) {
+    for (DSL_int8 i = 0; i < count; ++i) {
         DSL_uint64 num = va_arg(args, DSL_uint64);
         CHECK_MUL_OVERFLOW(result, num, UINT64_MAX, 0, "multiplication");
         result *= num;
     }
     va_end(args);
     return result;
+}
+
+// -------------------- Utility Functions --------------------
+static inline DSL_float32 DSL_Abs32(DSL_float32 x) {
+    return fabsf(x);
+}
+
+static inline DSL_float64 DSL_Abs64(DSL_float64 x) {
+    return fabs(x);
+}
+
+static inline int32_t DSL_AbsInt32(DSL_int32 x) {
+    return x < 0 ? -x : x;
+}
+
+static inline int64_t DSL_AbsInt64(DSL_int32 x) {
+    return x < 0 ? -x : x;
+}
+
+static inline DSL_float32 DSL_Round32(DSL_float32 x) {
+    return roundf(x);
+}
+
+static inline DSL_float64 DSL_Round64(DSL_float64 x) {
+    return round(x);
+}
+
+static inline DSL_float32 DSL_Floor32(DSL_float32 x) {
+    return floorf(x);
+}
+
+static inline DSL_float64 DSL_Floor64(DSL_float64 x) {
+    return floor(x);
+}
+
+static inline DSL_float32 DSL_Ceil32(DSL_float32 x) {
+    return ceilf(x);
+}
+
+static inline DSL_float64 DSL_Ceil64(DSL_float64 x) {
+    return ceil(x);
+}
+
+// Fast inverse square root (Quake III approximation)
+static inline DSL_float32 DSL_FastInvSqrt32(DSL_float32 x) {
+    union { DSL_float32 f; DSL_uint32 i; } conv = { x };
+    conv.i = 0x5F3759DF - (conv.i >> 1);
+    return conv.f * (1.5f - (x * 0.5f * conv.f * conv.f));
+}
+
+static inline DSL_float64 DSL_FastInvSqrt64(DSL_float64 x) {
+    union { DSL_float64 f; DSL_uint64 i; } conv = { x };
+    conv.i = 0x5FE6EB50C7B537A9 - (conv.i >> 1);
+    return conv.f * (1.5 - (x * 0.5 * conv.f * conv.f));
+}
+
+static inline DSL_float32 DSL_InvSqrt32(DSL_float32 x) {
+    return 1.0f / sqrtf(x);
+}
+
+static inline DSL_float64 DSL_InvSqrt64(DSL_float64 x) {
+    return 1.0 / sqrt(x);
+}
+
+// ------------------------------ TRIGONOMETRIC FUNCTIONS ------------------------------
+static inline DSL_float32 DSL_Sin32(DSL_float32 x) {
+    return sinf(x);
+}
+
+static inline DSL_float64 DSL_Sin64(DSL_float64 x) {
+    return sin(x);
+}
+
+static inline DSL_float32 DSL_Cos32(DSL_float32 x) {
+    return cosf(x);
+}
+
+static inline DSL_float64 DSL_Cos64(DSL_float64 x) {
+    return cos(x);
+}
+
+static inline DSL_float32 DSL_Tan32(DSL_float32 x) {
+    return tanf(x);
+}
+static inline DSL_float64 DSL_Tan64(DSL_float64 x) {
+    return tan(x);
+}
+
+// ------------------------------ LOGARITHMIC FUNCTIONS ------------------------------
+static inline DSL_float32 DSL_Log32(DSL_float32 x) {
+    return logf(x);
+}
+
+static inline DSL_float64 DSL_Log64(DSL_float64 x) {
+    return log(x);
+}
+
+static inline DSL_float32 DSL_Log10_32(DSL_float32 x) {
+    return log10f(x);
+}
+
+static inline DSL_float64 DSL_Log10_64(DSL_float64 x) {
+    return log10(x);
+}
+
+// ------------------------------ EXPONENTIAL FUNCTIONS ------------------------------
+static inline DSL_float32 DSL_Exp32(DSL_float32 x) {
+    return expf(x);
+}
+
+static inline DSL_float64 DSL_Exp64(DSL_float64 x) {
+    return exp(x);
+}
+
+static inline DSL_float32 DSL_Pow32(DSL_float32 base, DSL_float32 exp) {
+    return powf(base, exp);
+}
+
+static inline DSL_float64 DSL_Pow64(DSL_float64 base, DSL_float64 exp) {
+    return pow(base, exp);
+}
+
+// ------------------------------ HYPERBOLIC FUNCTIONS ------------------------------
+static inline DSL_float32 DSL_Sinh32(DSL_float32 x) {
+    return sinhf(x);
+}
+
+static inline DSL_float64 DSL_Sinh64(DSL_float64 x) {
+    return sinh(x);
+}
+
+static inline DSL_float32 DSL_Cosh32(DSL_float32 x) {
+    return coshf(x);
+}
+
+static inline DSL_float64 DSL_Cosh64(DSL_float64 x) {
+    return cosh(x);
+}
+
+static inline DSL_float32 DSL_Tanh32(DSL_float32 x) {
+    return tanhf(x);
+}
+
+static inline DSL_float64 DSL_Tanh64(DSL_float64 x) {
+    return tanh(x);
 }
 
 #endif

@@ -39,9 +39,8 @@ SOFTWARE.
 #include <stdio.h>
 #include <stdarg.h>
 #include <limits.h>
-#ifdef DSL_STD_LIB_FLAG_USE_MATH_H || defined(DSL_STD_LIB_FLAG_USE_CUSTOM_MATH_CONSTANTS)
 #include <math.h>
-#endif
+
 
 // ===========================================================
 //                    FIXED-SIZE DATA TYPES
@@ -94,7 +93,7 @@ typedef struct DSL_Node {
 } DSL_Node;
 
 // Structure representing the doubly linked list itself.
-typedef struct {
+typedef struct DSL_List {
     DSL_Node* head;        // Pointer to the first node
     DSL_Node* tail;        // Pointer to the last node
     size_t element_size;   // Size of each element in the list
@@ -263,4 +262,4 @@ void DSL_Crash_And_Burn(const char* error_message) {
     abort();
 }
 
-#endif // DSL_STD_LIB_H
+#endif
